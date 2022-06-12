@@ -7,6 +7,9 @@
   <img src="https://app.travis-ci.com/ben9583/solar-sim.svg?token=WtRJ5C3dvCnaJwX6svrD&branch=main" alt="Travis CI Build Status" />
 
   <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
+  
+  ![Preview of Solar Sim](https://user-images.githubusercontent.com/16968917/173254046-1da624e7-bbaf-4ad0-be30-27895b9e7ae2.gif)
+  
 </div>
 
 ## About
