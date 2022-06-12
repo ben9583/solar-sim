@@ -1,65 +1,56 @@
 <div align="center">
 
-  <h1><code>wasm-pack-template</code></h1>
+  <h1>Solar Sim 🪐</h1>
 
-  <strong>A template for kick starting a Rust and WebAssembly project using <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a>.</strong>
-
-  <p>
-    <a href="https://travis-ci.org/rustwasm/wasm-pack-template"><img src="https://img.shields.io/travis/rustwasm/wasm-pack-template.svg?style=flat-square" alt="Build Status" /></a>
-  </p>
-
-  <h3>
-    <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
-    <span> | </span>
-    <a href="https://discordapp.com/channels/442252698964721669/443151097398296587">Chat</a>
-  </h3>
+  <strong>A planetary body simulator with a HTML5/CSS3/JS frontend and simulated using Rust WebAssembly.</strong>
 
   <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
 </div>
 
 ## About
 
-[**📚 Read this template tutorial! 📚**][template-docs]
+This is a hobby project I started in 2020 as part of a project about [Lagrange points](https://youtu.be/03I7-etQ6Xc) for an astronomy class I took. Originally, this was written purely in JavaScript, but the performance was quite bad even on my i9 MacBook Pro and had a lot of stuttering, especially on Firefox. Almost 2 years later, I decided to return to the project to see if I could make it more useful for other people.
 
-This template is designed for compiling Rust libraries into WebAssembly and
-publishing the resulting package to NPM.
+Now that it uses Rust WebAssembly, the performance is significantly better and uses much less CPU. I'm looking to expand the functionality by allowing users to add and remove planets, change the speed of the simulation, and maybe expand from Lagrange points to other educational topics about space, such as the Three-Body Problem.
 
-Be sure to check out [other `wasm-pack` tutorials online][tutorials] for other
-templates and usages of `wasm-pack`.
+## Install
 
-[tutorials]: https://rustwasm.github.io/docs/wasm-pack/tutorials/index.html
-[template-docs]: https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html
+Before getting started, you will need [NodeJS v16](https://nodejs.org/dist/latest-v16.x/) and the [Rust Toolchain](https://www.rust-lang.org/tools/install).
 
-## 🚴 Usage
-
-### 🐑 Use `cargo generate` to Clone this Template
-
-[Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)
-
+Once you have these, begin by cloning the repo and updating `rustup`:
+```sh
+git clone https://github.com/ben9583/solar-sim.git solar-sim
+cd solar-sim
+rustup update
 ```
-cargo generate --git https://github.com/rustwasm/wasm-pack-template.git --name my-project
-cd my-project
+You will also need to install the requisite `npm` packages. Remember to be on NodeJS v16 if you use `nvm`.
+```sh
+cd website-src
+npm install
+cd ..
 ```
 
-### 🛠️ Build with `wasm-pack build`
+## Develop
 
-```
+Ensure you are in the root directory of this project. Begin by creating the `npm` package using `wasm-pack`; this will create the package in `./pkg`.
+```sh
 wasm-pack build
 ```
-
-### 🔬 Test in Headless Browsers with `wasm-pack test`
-
-```
-wasm-pack test --headless --firefox
-```
-
-### 🎁 Publish to NPM with `wasm-pack publish`
-
-```
-wasm-pack publish
+To start the website for development, run the following command in `website-src`. This will reload the website when you make a change or run `wasm-pack build` again.
+```sh
+cd website-src
+npm start
 ```
 
-## 🔋 Batteries Included
+## Build
+
+Finally, to make a production-ready build, use `npm run build` to generate a static website in `website-src/dist`:
+```sh
+cd website-src
+npm run build
+```
+
+## Links
 
 * [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen) for communicating
   between WebAssembly and JavaScript.
