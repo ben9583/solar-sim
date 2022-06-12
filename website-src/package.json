@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Creates the Solar Sim website.",
   "main": "index.js",
-  "bin": {
-    "solar-sim-app": ".bin/solar-sim-app.js"
-  },
   "scripts": {
     "build": "webpack --config webpack.config.js && cp -r ./static ./dist",
     "start": "webpack-dev-server"
