@@ -1,29 +1,30 @@
-sudo: false
+os: linux
+dist: xenial
+language: rust
 
-jobs:
-  include:
-  # Builds with wasm-pack.
-  - language: rust
-    cache: 
-    - cargo
-    - npm
-    rust: stable
-    env: 
-    - RUST_BACKTRACE=1
-    - NODE_VERSION=16
-    addons:
-      firefox: latest
-      chrome: stable
-    before_script:
-      - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
-      - cargo install-update -a
-      - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
-      - nvm install $NODE_VERSION
-      - cd website-src
-      - npm install
-      - cd ..
-    script:
-      - wasm-pack build
-      - wasm-pack test --chrome --firefox --headless
-      - cd website-src
-      - npm run build
+rust: stable
+addons:
+  firefox: latest
+  chrome: stable
+
+cache: 
+- cargo
+- npm
+
+env: 
+- RUST_BACKTRACE=1
+- NODE_VERSION=16
+
+before_script:
+  - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
+  - cargo install-update -a
+  - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
+  - nvm install $NODE_VERSION
+  - cd website-src
+  - npm install
+  - cd ..
+script:
+  - wasm-pack build
+  - wasm-pack test --chrome --firefox --headless
+  - cd website-src
+  - npm run build
