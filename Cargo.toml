@@ -3,9 +3,13 @@ name = "solar-sim"
 version = "0.1.0"
 authors = ["Ben Plate <bplate9583@gmail.com>"]
 edition = "2018"
+description = "Physics simulator written in Rust WASM for use in Solar Sim website"
+license = "MIT"
+repository = "https://github.com/ben9583/solar-sim.git"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
+path = "rust-src/lib.rs"
 
 [features]
 default = ["console_error_panic_hook"]
