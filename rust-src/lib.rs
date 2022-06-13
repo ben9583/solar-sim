@@ -79,6 +79,15 @@ pub fn step_time() {
         for i in 0..uni.len() {
             next_velocities.push(uni[i].next_velocity());
         }
+    }
+    {
+        let mut uni = UNIVERSE.write().unwrap();
+        for i in 0..uni.len() {
+            uni[i].velocity = next_velocities[i];
+        }
+    }
+    {
+        let uni = UNIVERSE.read().unwrap();
         for i in 0..uni.len() {
             next_positions.push(uni[i].next_position());
         }
@@ -86,7 +95,6 @@ pub fn step_time() {
     {
         let mut uni = UNIVERSE.write().unwrap();
         for i in 0..uni.len() {
-            uni[i].velocity = next_velocities[i];
             uni[i].position = next_positions[i];
         }
     }
