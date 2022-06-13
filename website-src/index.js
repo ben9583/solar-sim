@@ -126,6 +126,15 @@ toggleButton.addEventListener("click", (elem, e) => {
     playing = !playing;
 });
 
+const resetButton = document.getElementById("reset");
+
+resetButton.addEventListener("click", (elem, e) => {
+    bodies = [];
+    trails = [];
+    SolarSim.clear_universe();
+    ctx2.clearRect(0, 0, WIDTH, HEIGHT);
+})
+
 const spawnButton = document.getElementById("spawn");
 
 spawnButton.addEventListener("click", (elem, e) => {
