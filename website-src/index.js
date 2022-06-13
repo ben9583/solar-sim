@@ -143,9 +143,11 @@ spawnButton.addEventListener("click", (elem, e) => {
     const radius = parseFloat(document.getElementById("radius").value);
     const positionX = parseFloat(document.getElementById("positionX").value);
     const positionY = parseFloat(document.getElementById("positionY").value);
+    const velocityX = parseFloat(document.getElementById("velocityX").value);
+    const velocityY = parseFloat(document.getElementById("velocityY").value);
     
     console.log("checking");
-    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY)) || Math.abs(radius) < 0.01)
+    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
         return;
 
     console.log("success");
@@ -163,10 +165,11 @@ spawnButton.addEventListener("click", (elem, e) => {
         mass: mass,
         radius: radius,
         position: [positionX, positionY],
+        initialVelocity: [velocityX, velocityY],
         color: "#" + red + green + blue,
     });
 
     trails.push([]);
-    SolarSim.add_body(radius, mass, positionX, positionY, 0.2, 0.2);
+    SolarSim.add_body(radius, mass, positionX, positionY, velocityX, velocityY);
     step(false);
 })
