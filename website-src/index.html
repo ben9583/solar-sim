@@ -8,19 +8,22 @@
 
   <body>
     <button id="toggle">Pause</button>
+    <button id="reset">Reset</button>
     <div id="canvasContainer">
       <canvas width="1280" height="720" id="trails"></canvas>
       <canvas width="1280" height="720" id="scene"></canvas>
     </div>
 
-	<div>
-		<input id="name" type="text" placeholder="Name"/>
-		<input id="mass" type="number" placeholder="Mass"/>
-		<input id="radius" type="number" placeholder="Radius"/>
-		<input id="positionX" type="number" placeholder="X"/>
-		<input id="positionY" type="number" placeholder="Y"/>
-		<button id="spawn">Spawn</button>
-	</div>
+    <div>
+      <input id="name" type="text" placeholder="Name" />
+      <input id="mass" type="number" placeholder="Mass" />
+      <input id="radius" type="number" placeholder="Radius" />
+      <input id="positionX" type="number" placeholder="Position: X" />
+      <input id="positionY" type="number" placeholder="Position: Y" />
+      <input id="velocityX" type="number" placeholder="Velocity: X" />
+      <input id="velocityY" type="number" placeholder="Velocity: Y" />
+      <button id="spawn">Spawn</button>
+    </div>
 
     <script src="./bootstrap.js"></script>
   </body>
