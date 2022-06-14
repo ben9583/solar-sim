@@ -4,7 +4,7 @@
   "description": "Creates the Solar Sim website.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "rm -rf dist/*.wasm && webpack --config webpack.config.js",
     "start": "webpack-dev-server"
   },
   "keywords": [
