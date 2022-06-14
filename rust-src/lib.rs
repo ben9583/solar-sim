@@ -28,7 +28,6 @@ pub struct Vector2D {
 }
 
 pub struct Body<'a> {
-    radius: f64,
     mass: f64,
     position: Vector2D,
     velocity: Vector2D,
@@ -98,9 +97,8 @@ pub fn step_time() {
 }
 
 #[wasm_bindgen]
-pub fn add_body(radius: f64, mass: f64, position_x: f64, position_y: f64, velocity_x: f64, velocity_y: f64) {
+pub fn add_body(mass: f64, position_x: f64, position_y: f64, velocity_x: f64, velocity_y: f64) {
     let new_body = Body {
-        radius: radius,
         mass: mass,
         position: Vector2D {
             x: position_x,
