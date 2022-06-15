@@ -85,6 +85,7 @@ const drawTickTimeElem = document.getElementById("drawTickTime");
 
 let count = 0;
 let debug = debugElem.checked;
+document.getElementById("debugSection").style.visibility = debug ? "visible" : "hidden"
 debugElem.addEventListener("click", (elem, e) => {
     debug = debugElem.checked;
     if(debug) document.getElementById("debugSection").style.visibility = "visible";
