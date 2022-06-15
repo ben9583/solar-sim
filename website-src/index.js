@@ -146,11 +146,8 @@ spawnButton.addEventListener("click", (elem, e) => {
     const velocityX = parseFloat(document.getElementById("velocityX").value);
     const velocityY = parseFloat(document.getElementById("velocityY").value);
     
-    console.log("checking");
     if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
         return;
-
-    console.log("success");
 
     let red = Math.floor(Math.random() * 256).toString(16);
     let green = Math.floor(Math.random() * 256).toString(16);
