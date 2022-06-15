@@ -119,21 +119,26 @@ function step(simulate) {
     const newPositions = SolarSim.get_positions();
     for(let i = 0; i < bodies.length; i++) {
         let body = bodies[i];
+        let inBounds = (newPositions[i * 2] >= 0 && newPositions[i * 2] < WIDTH && newPositions[i * 2 + 1] >= 0 && newPositions[i * 2 + 1] < HEIGHT);
 
-        ctx.fillStyle = body.color;
-        ctx.beginPath();
-        ctx.arc(newPositions[i * 2], newPositions[i * 2 + 1], body.radius, 0, 2 * Math.PI);
-        ctx.fill();
+        if(inBounds) {
+            ctx.fillStyle = body.color;
+            ctx.beginPath();
+            ctx.arc(newPositions[i * 2], newPositions[i * 2 + 1], body.radius, 0, 2 * Math.PI);
+            ctx.fill();
+        }
 
         if(simulate) {
-            if(trails[i].length >= 100) {
+            if(trails[i].length >= 100 || (!inBounds && trails[i].length > 0)) {
                 let toRemove = trails[i].shift();
                 ctx2.fillStyle = "black";
                 ctx2.fillRect(toRemove[0] - 1, toRemove[1] - 1, 5, 5);
             }
-            trails[i].push([newPositions[i * 2], newPositions[i * 2 + 1]]);
-            ctx2.fillStyle = "white";
-            ctx2.fillRect(newPositions[i * 2], newPositions[i * 2 + 1], 3, 3);
+            if(inBounds) {
+                trails[i].push([newPositions[i * 2], newPositions[i * 2 + 1]]);
+                ctx2.fillStyle = "white";
+                ctx2.fillRect(newPositions[i * 2], newPositions[i * 2 + 1], 3, 3);
+            }
         }
     }
 
