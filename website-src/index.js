@@ -75,7 +75,7 @@ let trails = [
 for(let i = 0; i < bodies.length; i++) {
     let body = bodies[i];
     
-    SolarSim.add_body(body.name, body.mass, body.position[0], body.position[1], body.initialVelocity[0], body.initialVelocity[1]);
+    SolarSim.add_body(body.mass, body.position[0], body.position[1], body.initialVelocity[0], body.initialVelocity[1]);
 }
 
 const debugElem = document.getElementById("debug");
@@ -203,6 +203,6 @@ spawnButton.addEventListener("click", (elem, e) => {
     });
 
     trails.push([]);
-    SolarSim.add_body(radius, mass, positionX, positionY, velocityX, velocityY);
+    SolarSim.add_body(mass, positionX, positionY, velocityX, velocityY);
     step(false);
 })

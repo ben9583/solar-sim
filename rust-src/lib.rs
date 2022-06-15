@@ -28,7 +28,6 @@ pub struct Vector2D {
 }
 
 pub struct Body<'a> {
-    radius: f64,
     mass: f64,
     position: Vector2D,
     velocity: Vector2D,
@@ -51,10 +50,7 @@ impl Body<'_> {
 
                 let angle = dy.atan2(dx);
 
-                let distance = (dx.powf(2.0) + dy.powf(2.0)).sqrt();
-
-                let acceleration = BIG_G * uni[i].mass / distance.powi(2);
-                let delta_v = acceleration * TIME_STEP;
+                let delta_v = BIG_G * uni[i].mass / (dx.powf(2.0) + dy.powf(2.0)) * TIME_STEP; // (G(m1)(m2)/d^2) / m1 * t = G(m2)/d^2 * t = at = delta_v
 
                 out.x += delta_v * -angle.cos();
                 out.y += delta_v * -angle.sin();
@@ -65,7 +61,7 @@ impl Body<'_> {
     }
 
     fn next_position(&self) -> Vector2D {
-        return Vector2D { x: self.position.x + self.velocity.x * TIME_STEP, y: self.position.y + self.velocity.y * TIME_STEP };
+        return Vector2D { x: self.position.x + self.velocity.x * TIME_STEP, y: self.position.y + self.velocity.y * TIME_STEP }; // x_new = x_old + vt
     }
 }
 
@@ -101,9 +97,8 @@ pub fn step_time() {
 }
 
 #[wasm_bindgen]
-pub fn add_body(radius: f64, mass: f64, position_x: f64, position_y: f64, velocity_x: f64, velocity_y: f64) {
+pub fn add_body(mass: f64, position_x: f64, position_y: f64, velocity_x: f64, velocity_y: f64) {
     let new_body = Body {
-        radius: radius,
         mass: mass,
         position: Vector2D {
             x: position_x,
