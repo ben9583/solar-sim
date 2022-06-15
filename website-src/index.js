@@ -97,6 +97,7 @@ const canvas2 = document.getElementById("trails");
 const ctx = canvas.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
 
+let playing = true;
 let tickTime = performance.now();
 
 function step(simulate) {
@@ -145,20 +146,17 @@ function step(simulate) {
 
     if(debug && count % 10 == 0) drawTickTimeElem.innerHTML = Math.round((performance.now() - tickTime) * 1000);
 
-    window.requestAnimationFrame(step);
+    if(playing) window.requestAnimationFrame(step);
 }
-
-let playing = true;
 
 const toggleButton = document.getElementById("toggle");
 
 toggleButton.addEventListener("click", (elem, e) => {
     if(playing) {
-        clearInterval(proc);
         toggleButton.innerHTML = "Play";
     } else {
-        proc = setInterval(() => step(true), 10);
         toggleButton.innerHTML = "Pause";
+        window.requestAnimationFrame(step);
     }
     playing = !playing;
 });
