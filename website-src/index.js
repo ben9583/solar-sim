@@ -205,7 +205,6 @@ spawnButton.addEventListener("click", (elem, e) => {
 
     trails.push([]);
     SolarSim.add_body(mass, positionX, positionY, velocityX, velocityY);
-    step(false);
 })
 
 window.requestAnimationFrame(step);
