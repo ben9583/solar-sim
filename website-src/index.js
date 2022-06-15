@@ -78,15 +78,43 @@ for(let i = 0; i < bodies.length; i++) {
     SolarSim.add_body(body.name, body.mass, body.position[0], body.position[1], body.initialVelocity[0], body.initialVelocity[1]);
 }
 
+const debugElem = document.getElementById("debug");
+const numBodiesElem = document.getElementById("numBodies");
+const simulationTickTimeElem = document.getElementById("simTickTime");
+const drawTickTimeElem = document.getElementById("drawTickTime");
+
+let count = 0;
+let debug = debugElem.checked;
+debugElem.addEventListener("click", (elem, e) => {
+    debug = debugElem.checked;
+    if(debug) document.getElementById("debugSection").style.visibility = "visible";
+    else document.getElementById("debugSection").style.visibility = "hidden";
+})
+
 const canvas = document.getElementById("scene");
 const canvas2 = document.getElementById("trails");
 const ctx = canvas.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
 
+let tickTime = performance.now();
+
 function step(simulate) {
-    if(simulate) SolarSim.step_time();
+    if(simulate) {
+        count++;
+        if(debug && count % 10 == 0) {
+            numBodiesElem.innerHTML = bodies.length;
+            tickTime = performance.now();
+            SolarSim.step_time();
+            simulationTickTimeElem.innerHTML = Math.round((performance.now() - tickTime) * 1000);
+        }
+        else {
+            SolarSim.step_time();
+        }
+    }
 
     ctx.clearRect(0, 0, WIDTH, HEIGHT)
+
+    if(debug && count % 10 == 0) tickTime = performance.now();
 
     const newPositions = SolarSim.get_positions();
     for(let i = 0; i < bodies.length; i++) {
@@ -108,6 +136,8 @@ function step(simulate) {
             ctx2.fillRect(newPositions[i * 2], newPositions[i * 2 + 1], 3, 3);
         }
     }
+
+    if(debug && count % 10 == 0) drawTickTimeElem.innerHTML = Math.round((performance.now() - tickTime) * 1000);
 }
 
 let proc = setInterval(() => step(true), 10);
