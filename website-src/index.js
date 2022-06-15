@@ -144,9 +144,10 @@ function step(simulate) {
     }
 
     if(debug && count % 10 == 0) drawTickTimeElem.innerHTML = Math.round((performance.now() - tickTime) * 1000);
+
+    window.requestAnimationFrame(step);
 }
 
-let proc = setInterval(() => step(true), 10);
 let playing = true;
 
 const toggleButton = document.getElementById("toggle");
@@ -206,3 +207,5 @@ spawnButton.addEventListener("click", (elem, e) => {
     SolarSim.add_body(mass, positionX, positionY, velocityX, velocityY);
     step(false);
 })
+
+window.requestAnimationFrame(step);
