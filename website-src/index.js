@@ -92,10 +92,39 @@ debugElem.addEventListener("click", (elem, e) => {
     else document.getElementById("debugSection").style.visibility = "hidden";
 })
 
+const highTrailQualityElem = document.getElementById("highTrailQuality");
+const mediumTrailQualityElem = document.getElementById("mediumTrailQuality");
+const lowTrailQualityElem = document.getElementById("lowTrailQuality");
+const noneTrailQualityElem = document.getElementById("noneTrailQuality");
+
+
 const canvas = document.getElementById("scene");
 const canvas2 = document.getElementById("trails");
 const ctx = canvas.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
+
+let numTrailParticles = highTrailQualityElem.checked ? 100 : mediumTrailQualityElem.checked ? 50 : lowTrailQualityElem.checked ? 10 : 0;
+
+highTrailQualityElem.addEventListener("click", (elem, e) => {
+    numTrailParticles = 100;
+    for(let i = 0; i < trails.length; i++) trails[i] = [];
+    ctx2.clearRect(0, 0, WIDTH, HEIGHT);
+});
+mediumTrailQualityElem.addEventListener("click", (elem, e) => {
+    numTrailParticles = 50;
+    for(let i = 0; i < trails.length; i++) trails[i] = [];
+    ctx2.clearRect(0, 0, WIDTH, HEIGHT);
+});
+lowTrailQualityElem.addEventListener("click", (elem, e) => {
+    numTrailParticles = 10;
+    for(let i = 0; i < trails.length; i++) trails[i] = [];
+    ctx2.clearRect(0, 0, WIDTH, HEIGHT);
+});
+noneTrailQualityElem.addEventListener("click", (elem, e) => {
+    numTrailParticles = 0;
+    for(let i = 0; i < trails.length; i++) trails[i] = [];
+    ctx2.clearRect(0, 0, WIDTH, HEIGHT);
+});
 
 let playing = true;
 let tickTime = performance.now();
@@ -130,8 +159,8 @@ function step(simulate) {
             ctx.fill();
         }
 
-        if(simulate) {
-            if(trails[i].length >= 100 || (!inBounds && trails[i].length > 0)) {
+        if(simulate && numTrailParticles > 0 && count % (100 / numTrailParticles) == 0) {
+            if(trails[i].length >= numTrailParticles || (!inBounds && trails[i].length > 0)) {
                 let toRemove = trails[i].shift();
                 ctx2.fillStyle = "black";
                 ctx2.fillRect(toRemove[0] - 1, toRemove[1] - 1, 5, 5);

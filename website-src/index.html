@@ -25,6 +25,23 @@
       <button id="spawn">Spawn</button>
     </div>
 
+    <div style="color:white">
+      <p>Settings:</p>
+      <p>Trail quality:</p>
+      <div>
+        <input type="radio" id="highTrailQuality" name="trailQuality" value="high" checked="checked"/>
+        <label for="highTrailQuality">High</label><br />
+        <input type="radio" id="mediumTrailQuality" name="trailQuality" value="medium" />
+        <label for="mediumTrailQuality">Medium</label><br />
+        <input type="radio" id="lowTrailQuality" name="trailQuality" value="low" />
+        <label for="lowTrailQuality">Low</label><br />
+        <input type="radio" id="noneTrailQuality" name="trailQuality" value="none" />
+        <label for="noneTrailQuality">None</label><br />
+      </div>
+    </div>
+    <br />
+    <br />
+
     <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
     <div id="debugSection" style="color:white">
       <p># of bodies: <span id="numBodies">6</span></p>
