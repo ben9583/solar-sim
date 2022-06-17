@@ -15,7 +15,8 @@ use js_sys::Array;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 const BIG_G: f64 = 0.00000000006674;
-const TIME_STEP: f64 = 1.0;
+const TIME_STEP: f64 = 0.2;
+const NUM_SIMS_PER_STEP: i32 = 5;
 
 lazy_static! {
     static ref UNIVERSE: RwLock<Vec<Body<'static>>> = RwLock::new(vec![]);
@@ -69,29 +70,37 @@ impl Body<'_> {
 pub fn step_time() {
     let mut next_velocities: Vec<Vector2D> = vec![];
     let mut next_positions: Vec<Vector2D> = vec![];
-    
     {
         let uni = UNIVERSE.read().unwrap();
         for i in 0..uni.len() {
-            next_velocities.push(uni[i].next_velocity());
+            next_velocities.push(uni[i].velocity);
+            next_positions.push(uni[i].position);
         }
     }
-    {
-        let mut uni = UNIVERSE.write().unwrap();
-        for i in 0..uni.len() {
-            uni[i].velocity = next_velocities[i];
+    for _ in 0..NUM_SIMS_PER_STEP {
+        {
+            let uni = UNIVERSE.read().unwrap();
+            for i in 0..uni.len() {
+                next_velocities[i] = uni[i].next_velocity();
+            }
         }
-    }
-    {
-        let uni = UNIVERSE.read().unwrap();
-        for i in 0..uni.len() {
-            next_positions.push(uni[i].next_position());
+        {
+            let mut uni = UNIVERSE.write().unwrap();
+            for i in 0..uni.len() {
+                uni[i].velocity = next_velocities[i];
+            }
         }
-    }
-    {
-        let mut uni = UNIVERSE.write().unwrap();
-        for i in 0..uni.len() {
-            uni[i].position = next_positions[i];
+        {
+            let uni = UNIVERSE.read().unwrap();
+            for i in 0..uni.len() {
+                next_positions[i] = uni[i].next_position();
+            }
+        }
+        {
+            let mut uni = UNIVERSE.write().unwrap();
+            for i in 0..uni.len() {
+                uni[i].position = next_positions[i];
+            }
         }
     }
 }
