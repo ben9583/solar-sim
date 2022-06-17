@@ -25,8 +25,8 @@
       <button id="spawn">Spawn</button>
     </div>
 
-    <div style="color:white">
-      <p>Settings:</p>
+    <p>Settings:</p>
+    <div style="color:white;float:left;padding-right:25px">
       <p>Trail quality:</p>
       <div>
         <input type="radio" id="highTrailQuality" name="trailQuality" value="high" checked="checked"/>
@@ -39,8 +39,18 @@
         <label for="noneTrailQuality">None</label><br />
       </div>
     </div>
-    <br />
-    <br />
+    <div style="color:white;float:left;padding-right:25px">
+      <p>Simulation Accuracy:</p>
+      <div>
+        <input type="radio" id="highSimAccuracy" name="simAccuracy" value="high" />
+        <label for="highSimAccuracy">High</label><br />
+        <input type="radio" id="mediumSimAccuracy" name="simAccuracy" value="medium" checked="checked" />
+        <label for="mediumSimAccuracy">Medium</label><br />
+        <input type="radio" id="lowSimAccuracy" name="simAccuracy" value="low" />
+        <label for="lowSimAccuracy">Low</label><br />
+      </div>
+    </div>
+    <div style="clear:left;height:50px"></div>
 
     <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
     <div id="debugSection" style="color:white">

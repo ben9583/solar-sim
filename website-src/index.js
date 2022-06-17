@@ -96,7 +96,9 @@ const highTrailQualityElem = document.getElementById("highTrailQuality");
 const mediumTrailQualityElem = document.getElementById("mediumTrailQuality");
 const lowTrailQualityElem = document.getElementById("lowTrailQuality");
 const noneTrailQualityElem = document.getElementById("noneTrailQuality");
-
+const highSimAccuracyElem = document.getElementById("highSimAccuracy");
+const mediumSimAccuracyElem = document.getElementById("mediumSimAccuracy");
+const lowSimAccuracyElem = document.getElementById("lowSimAccuracy");
 
 const canvas = document.getElementById("scene");
 const canvas2 = document.getElementById("trails");
@@ -125,6 +127,10 @@ noneTrailQualityElem.addEventListener("click", (elem, e) => {
     for(let i = 0; i < trails.length; i++) trails[i] = [];
     ctx2.clearRect(0, 0, WIDTH, HEIGHT);
 });
+
+highSimAccuracyElem.addEventListener("click", (elem, e) => { SolarSim.set_simulation_accuracy(0.05, 20) })
+mediumSimAccuracyElem.addEventListener("click", (elem, e) => { SolarSim.set_simulation_accuracy(0.2, 5) })
+lowSimAccuracyElem.addEventListener("click", (elem, e) => { SolarSim.set_simulation_accuracy(1.0, 1) })
 
 let playing = true;
 let tickTime = performance.now();

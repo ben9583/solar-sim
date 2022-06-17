@@ -14,11 +14,11 @@ use js_sys::Array;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 const BIG_G: f64 = 0.00000000006674;
-const TIME_STEP: f64 = 0.2;
-const NUM_SIMS_PER_STEP: i32 = 5;
 
 lazy_static! {
     static ref UNIVERSE: RwLock<Vec<Body>> = RwLock::new(vec![]);
+    static ref TIME_STEP: RwLock<f64> = RwLock::new(0.2);
+    static ref NUM_SIMS_PER_STEP: RwLock<i32> = RwLock::new(5);
 }
 
 #[derive(Clone, Copy)]
@@ -40,8 +40,7 @@ impl Body {
             return;
         }
 
-        // let mut out: Vector2D = self.velocity;
-
+        let ts = *(TIME_STEP.read().unwrap());
 
         for i in 0..uni.len() {
             if uni[i].mass.abs() > 0.000001 {
@@ -53,20 +52,19 @@ impl Body {
 
                 let angle = dy.atan2(dx);
 
-                let delta_v = (BIG_G * uni[i].mass / dist) * TIME_STEP; // (G(m1)(m2)/d^2) / m1 * t = G(m2)/d^2 * t = at = delta_v
+                let delta_v = (BIG_G * uni[i].mass / dist) * ts; // (G(m1)(m2)/d^2) / m1 * t = G(m2)/d^2 * t = at = delta_v
 
                 self.velocity.x += delta_v * -angle.cos();
                 self.velocity.y += delta_v * -angle.sin();
             }
         }
-
-        // self.velocity = out;
     }
 
     fn next_position(&mut self) {
-        self.position.x += self.velocity.x * TIME_STEP;
-        self.position.y += self.velocity.y * TIME_STEP;
-        // return Vector2D { x: self.position.x + self.velocity.x * TIME_STEP, y: self.position.y + self.velocity.y * TIME_STEP }; // x_new = x_old + vt
+        let ts = *(TIME_STEP.read().unwrap());
+
+        self.position.x += self.velocity.x * ts;
+        self.position.y += self.velocity.y * ts;
     }
 }
 
@@ -75,7 +73,9 @@ pub fn step_time() {
     let mut uni = UNIVERSE.write().unwrap();
     let num_bodies = uni.len();
 
-    for _ in 0..NUM_SIMS_PER_STEP {
+    let nsps = *(NUM_SIMS_PER_STEP.read().unwrap());
+
+    for _ in 0..nsps {
         for i in 0..num_bodies {
             let mut body = uni[i];
             body.next_velocity(&uni);
@@ -128,4 +128,13 @@ pub fn get_positions() -> Array {
     }
 
     return out;
+}
+
+#[wasm_bindgen]
+pub fn set_simulation_accuracy(time_step: f64, num_sims_per_step: i32) {
+    let mut ts = TIME_STEP.write().unwrap();
+    *ts = time_step;
+
+    let mut nsps = NUM_SIMS_PER_STEP.write().unwrap();
+    *nsps = num_sims_per_step;
 }
