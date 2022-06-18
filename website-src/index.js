@@ -132,6 +132,8 @@ highSimAccuracyElem.addEventListener("click", (elem, e) => { SolarSim.set_simula
 mediumSimAccuracyElem.addEventListener("click", (elem, e) => { SolarSim.set_simulation_accuracy(0.2, 5) })
 lowSimAccuracyElem.addEventListener("click", (elem, e) => { SolarSim.set_simulation_accuracy(1.0, 1) })
 
+highSimAccuracyElem.checked ? SolarSim.set_simulation_accuracy(0.05, 20) : lowSimAccuracyElem.checked ? SolarSim.set_simulation_accuracy(1.0, 1) : "";
+
 let playing = true;
 let tickTime = performance.now();
 
