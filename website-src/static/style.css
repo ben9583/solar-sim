@@ -7,6 +7,8 @@ div#canvasContainer {
 	position: relative;
 	width: 1280px;
 	height: 720px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 canvas#scene {
@@ -19,6 +21,9 @@ canvas#trails {
 	position: absolute;
 	width: 1280px;
 	height: 720px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #454545;
 }
 
 div.body {
