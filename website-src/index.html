@@ -25,38 +25,40 @@
       <button id="spawn">Spawn</button>
     </div>
 
-    <p>Settings:</p>
-    <div style="color:white;float:left;padding-right:25px">
-      <p>Trail quality:</p>
-      <div>
-        <input type="radio" id="highTrailQuality" name="trailQuality" value="high" checked="checked"/>
-        <label for="highTrailQuality">High</label><br />
-        <input type="radio" id="mediumTrailQuality" name="trailQuality" value="medium" />
-        <label for="mediumTrailQuality">Medium</label><br />
-        <input type="radio" id="lowTrailQuality" name="trailQuality" value="low" />
-        <label for="lowTrailQuality">Low</label><br />
-        <input type="radio" id="noneTrailQuality" name="trailQuality" value="none" />
-        <label for="noneTrailQuality">None</label><br />
+    <div style="color:white;">
+      <p style="margin-bottom:0">Settings:</p>
+      <div style="float:left;padding-right:25px">
+        <p>Trail quality:</p>
+        <div>
+          <input type="radio" id="highTrailQuality" name="trailQuality" value="high" checked="checked"/>
+          <label for="highTrailQuality">High</label><br />
+          <input type="radio" id="mediumTrailQuality" name="trailQuality" value="medium" />
+          <label for="mediumTrailQuality">Medium</label><br />
+          <input type="radio" id="lowTrailQuality" name="trailQuality" value="low" />
+          <label for="lowTrailQuality">Low</label><br />
+          <input type="radio" id="noneTrailQuality" name="trailQuality" value="none" />
+          <label for="noneTrailQuality">None</label><br />
+        </div>
       </div>
-    </div>
-    <div style="color:white;float:left;padding-right:25px">
-      <p>Simulation Accuracy:</p>
-      <div>
-        <input type="radio" id="highSimAccuracy" name="simAccuracy" value="high" />
-        <label for="highSimAccuracy">High</label><br />
-        <input type="radio" id="mediumSimAccuracy" name="simAccuracy" value="medium" checked="checked" />
-        <label for="mediumSimAccuracy">Medium</label><br />
-        <input type="radio" id="lowSimAccuracy" name="simAccuracy" value="low" />
-        <label for="lowSimAccuracy">Low</label><br />
+      <div style="color:white;float:left;padding-right:25px">
+        <p>Simulation Accuracy:</p>
+        <div>
+          <input type="radio" id="highSimAccuracy" name="simAccuracy" value="high" />
+          <label for="highSimAccuracy">High</label><br />
+          <input type="radio" id="mediumSimAccuracy" name="simAccuracy" value="medium" checked="checked" />
+          <label for="mediumSimAccuracy">Medium</label><br />
+          <input type="radio" id="lowSimAccuracy" name="simAccuracy" value="low" />
+          <label for="lowSimAccuracy">Low</label><br />
+        </div>
       </div>
-    </div>
-    <div style="clear:left;height:50px"></div>
+      <div style="clear:left;height:50px"></div>
 
-    <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
-    <div id="debugSection" style="color:white">
-      <p># of bodies: <span id="numBodies">6</span></p>
-      <p>Simulation tick time: <span id="simTickTime">10</span><span>μs</span></p>
-      <p>Draw tick time: <span id="drawTickTime">10</span><span>μs</span></p>
+      <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
+      <div id="debugSection" style="color:white">
+        <p># of bodies: <span id="numBodies">6</span></p>
+        <p>Simulation tick time: <span id="simTickTime">10</span><span>μs</span></p>
+        <p>Draw tick time: <span id="drawTickTime">10</span><span>μs</span></p>
+      </div>
     </div>
 
     <script src="./bootstrap.js"></script>
