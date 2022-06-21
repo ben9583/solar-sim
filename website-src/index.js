@@ -325,6 +325,8 @@ spawnButton.addEventListener("click", (elem, e) => {
     const velocityY = parseFloat(document.getElementById("velocityY").value);
     
     addBody(name, mass, radius, positionX, positionY, velocityX, velocityY);
+
+    step(false);
 })
 
 window.requestAnimationFrame(step);
