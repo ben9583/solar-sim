@@ -127,11 +127,13 @@ preciseAdderButton.checked = "";
 dropAdderButton.addEventListener("click", () => {
     dropAdder.style.display = "block";
     preciseAdder.style.display = "none";
+    dropAdderEnabled = true;
 })
 
 preciseAdderButton.addEventListener("click", () => {
     dropAdder.style.display = "none";
     preciseAdder.style.display = "block";
+    dropAdderEnabled = false;
 })
 
 const highTrailQualityElem = document.getElementById("highTrailQuality");
@@ -151,6 +153,7 @@ const ctx2 = canvas2.getContext("2d");
 const ctx3 = canvas3.getContext("2d");
 
 ctx3.strokeStyle = "white";
+let dropAdderEnabled = false;
 let mouseInCanvas = false;
 let mouseClicking = false;
 let clickedX = 0;
@@ -194,24 +197,26 @@ canvas3.addEventListener("mouseup", (elem, e) => {
     step(false);
 });
 canvas3.addEventListener("mousemove", (elem, e) => {
-    let pos = getMousePos(canvas3, elem);
+    if(dropAdderEnabled) {
+        let pos = getMousePos(canvas3, elem);
 
-    if(mouseInCanvas) {
-        ctx3.clearRect(0, 0, WIDTH, HEIGHT);
+        if(mouseInCanvas) {
+            ctx3.clearRect(0, 0, WIDTH, HEIGHT);
 
-        const radius = parseFloat(document.getElementById("dropRadius").value);
-        if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
-            ctx3.beginPath();
+            const radius = parseFloat(document.getElementById("dropRadius").value);
+            if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
+                ctx3.beginPath();
 
-            if(mouseClicking) {
-                ctx3.arc(clickedX, clickedY, radius, 0, 2 * Math.PI);
-                ctx3.moveTo(clickedX, clickedY);
-                ctx3.lineTo(pos.x, pos.y);
-            } else {
-                ctx3.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+                if(mouseClicking) {
+                    ctx3.arc(clickedX, clickedY, radius, 0, 2 * Math.PI);
+                    ctx3.moveTo(clickedX, clickedY);
+                    ctx3.lineTo(pos.x, pos.y);
+                } else {
+                    ctx3.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+                }
+
+                ctx3.stroke();
             }
-
-            ctx3.stroke();
         }
     }
 })
@@ -334,7 +339,7 @@ resetButton.addEventListener("click", (elem, e) => {
     step(false);
 })
 
-const spawnButton = document.getElementById("spawn");
+const spawnButton = document.getElementById("preciseSpawn");
 
 spawnButton.addEventListener("click", (elem, e) => {
     const name = document.getElementById("preciseName").value;
