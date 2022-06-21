@@ -78,6 +78,31 @@ for(let i = 0; i < bodies.length; i++) {
     SolarSim.add_body(body.mass, body.position[0], body.position[1], body.initialVelocity[0], body.initialVelocity[1]);
 }
 
+function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY) {
+    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
+        return;
+
+    let red = Math.floor(Math.random() * 256).toString(16);
+    let green = Math.floor(Math.random() * 256).toString(16);
+    let blue = Math.floor(Math.random() * 256).toString(16);
+
+    if(red.length == 1) red = "0" + red;
+    if(green.length == 1) green = "0" + green;
+    if(blue.length == 1) blue = "0" + blue;
+
+    bodies.push({
+        name: name,
+        mass: mass,
+        radius: radius,
+        position: [positionX, positionY],
+        initialVelocity: [velocityX, velocityY],
+        color: "#" + red + green + blue,
+    });
+
+    trails.push([]);
+    SolarSim.add_body(mass, positionX, positionY, velocityX, velocityY);
+}
+
 const debugElem = document.getElementById("debug");
 const numBodiesElem = document.getElementById("numBodies");
 const simulationTickTimeElem = document.getElementById("simTickTime");
@@ -92,6 +117,25 @@ debugElem.addEventListener("click", (elem, e) => {
     else document.getElementById("debugSection").style.visibility = "hidden";
 })
 
+const dropAdderButton = document.getElementById("dropAdderButton");
+const preciseAdderButton = document.getElementById("preciseAdderButton");
+const dropAdder = document.getElementById("dropAdder");
+const preciseAdder = document.getElementById("preciseAdder");
+dropAdderButton.checked = "";
+preciseAdderButton.checked = "";
+
+dropAdderButton.addEventListener("click", () => {
+    dropAdder.style.display = "block";
+    preciseAdder.style.display = "none";
+    dropAdderEnabled = true;
+})
+
+preciseAdderButton.addEventListener("click", () => {
+    dropAdder.style.display = "none";
+    preciseAdder.style.display = "block";
+    dropAdderEnabled = false;
+})
+
 const highTrailQualityElem = document.getElementById("highTrailQuality");
 const mediumTrailQualityElem = document.getElementById("mediumTrailQuality");
 const lowTrailQualityElem = document.getElementById("lowTrailQuality");
@@ -102,8 +146,80 @@ const lowSimAccuracyElem = document.getElementById("lowSimAccuracy");
 
 const canvas = document.getElementById("scene");
 const canvas2 = document.getElementById("trails");
+const canvas3 = document.getElementById("placement");
+
 const ctx = canvas.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
+const ctx3 = canvas3.getContext("2d");
+
+ctx3.strokeStyle = "white";
+let dropAdderEnabled = false;
+let mouseInCanvas = false;
+let mouseClicking = false;
+let clickedX = 0;
+let clickedY = 0;
+
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+canvas3.addEventListener("mouseenter", () => { 
+    mouseInCanvas = true;
+});
+canvas3.addEventListener("mouseleave", () => { 
+    mouseInCanvas = false;
+    ctx3.clearRect(0, 0, WIDTH, HEIGHT);
+});
+canvas3.addEventListener("mousedown", (elem, e) => {
+    mouseClicking = true;
+    let pos = getMousePos(canvas3, elem);
+
+    clickedX = pos.x;
+    clickedY = pos.y;
+});
+canvas3.addEventListener("mouseup", (elem, e) => {
+    mouseClicking = false;
+    let pos = getMousePos(canvas3, elem);
+
+    let distX = (clickedX - pos.x) / 25;
+    let distY = (clickedY - pos.y) / 25;
+
+    const name = document.getElementById("dropName").value;
+    const mass = parseFloat(document.getElementById("dropMass").value);
+    const radius = parseFloat(document.getElementById("dropRadius").value);
+
+    addBody(name, mass, radius, clickedX, clickedY, distX, distY);
+
+    step(false);
+});
+canvas3.addEventListener("mousemove", (elem, e) => {
+    if(dropAdderEnabled) {
+        let pos = getMousePos(canvas3, elem);
+
+        if(mouseInCanvas) {
+            ctx3.clearRect(0, 0, WIDTH, HEIGHT);
+
+            const radius = parseFloat(document.getElementById("dropRadius").value);
+            if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
+                ctx3.beginPath();
+
+                if(mouseClicking) {
+                    ctx3.arc(clickedX, clickedY, radius, 0, 2 * Math.PI);
+                    ctx3.moveTo(clickedX, clickedY);
+                    ctx3.lineTo(pos.x, pos.y);
+                } else {
+                    ctx3.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+                }
+
+                ctx3.stroke();
+            }
+        }
+    }
+})
 
 let numTrailParticles = highTrailQualityElem.checked ? 100 : mediumTrailQualityElem.checked ? 50 : lowTrailQualityElem.checked ? 10 : 0;
 
@@ -159,6 +275,20 @@ function step(simulate) {
     for(let i = 0; i < bodies.length; i++) {
         let body = bodies[i];
         let inBounds = (newPositions[i * 2] >= 0 && newPositions[i * 2] < WIDTH && newPositions[i * 2 + 1] >= 0 && newPositions[i * 2 + 1] < HEIGHT);
+        let inSimBounds = (newPositions[i * 2] >= -WIDTH && newPositions[i * 2] < 2 * WIDTH && newPositions[i * 2 + 1] >= -HEIGHT && newPositions[i * 2 + 1] < 2 * HEIGHT)
+
+        if(!inSimBounds) {
+            ctx2.fillStyle = "black";
+            for(let j = 0; j < trails[i].length; j++) {
+                ctx2.fillRect(trails[i][j][0] - 1, trails[i][j][1] - 1, 5, 5);
+            }
+            bodies.splice(i, 1);
+            trails.splice(i, 1);
+            SolarSim.remove_body(i);
+
+            i--;
+            continue;
+        }
 
         if(inBounds) {
             ctx.fillStyle = body.color;
@@ -183,7 +313,7 @@ function step(simulate) {
 
     if(debug && count % 10 == 0) drawTickTimeElem.innerHTML = Math.round((performance.now() - tickTime) * 1000);
 
-    if(playing) window.requestAnimationFrame(step);
+    if(playing && simulate) window.requestAnimationFrame(step);
 }
 
 const toggleButton = document.getElementById("toggle");
@@ -205,41 +335,24 @@ resetButton.addEventListener("click", (elem, e) => {
     trails = [];
     SolarSim.clear_universe();
     ctx2.clearRect(0, 0, WIDTH, HEIGHT);
+
+    step(false);
 })
 
-const spawnButton = document.getElementById("spawn");
+const spawnButton = document.getElementById("preciseSpawn");
 
 spawnButton.addEventListener("click", (elem, e) => {
-    const name = document.getElementById("name").value;
-    const mass = parseFloat(document.getElementById("mass").value);
-    const radius = parseFloat(document.getElementById("radius").value);
-    const positionX = parseFloat(document.getElementById("positionX").value);
-    const positionY = parseFloat(document.getElementById("positionY").value);
-    const velocityX = parseFloat(document.getElementById("velocityX").value);
-    const velocityY = parseFloat(document.getElementById("velocityY").value);
+    const name = document.getElementById("preciseName").value;
+    const mass = parseFloat(document.getElementById("preciseMass").value);
+    const radius = parseFloat(document.getElementById("preciseRadius").value);
+    const positionX = parseFloat(document.getElementById("precisePositionX").value);
+    const positionY = parseFloat(document.getElementById("precisePositionY").value);
+    const velocityX = parseFloat(document.getElementById("preciseVelocityX").value);
+    const velocityY = parseFloat(document.getElementById("preciseVelocityY").value);
     
-    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
-        return;
+    addBody(name, mass, radius, positionX, positionY, velocityX, velocityY);
 
-    let red = Math.floor(Math.random() * 256).toString(16);
-    let green = Math.floor(Math.random() * 256).toString(16);
-    let blue = Math.floor(Math.random() * 256).toString(16);
-
-    if(red.length == 1) red = "0" + red;
-    if(green.length == 1) green = "0" + green;
-    if(blue.length == 1) blue = "0" + blue;
-
-    bodies.push({
-        name: name,
-        mass: mass,
-        radius: radius,
-        position: [positionX, positionY],
-        initialVelocity: [velocityX, velocityY],
-        color: "#" + red + green + blue,
-    });
-
-    trails.push([]);
-    SolarSim.add_body(mass, positionX, positionY, velocityX, velocityY);
+    step(false);
 })
 
 window.requestAnimationFrame(step);
