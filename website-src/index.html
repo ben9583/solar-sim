@@ -15,15 +15,30 @@
       <canvas width="1280" height="720" id="placement"></canvas>
     </div>
 
-    <div>
-      <input id="name" type="text" placeholder="Name" />
-      <input id="mass" type="number" placeholder="Mass" />
-      <input id="radius" type="number" placeholder="Radius" />
-      <input id="positionX" type="number" placeholder="Position: X" />
-      <input id="positionY" type="number" placeholder="Position: Y" />
-      <input id="velocityX" type="number" placeholder="Velocity: X" />
-      <input id="velocityY" type="number" placeholder="Velocity: Y" />
-      <button id="spawn">Spawn</button>
+    <div style="color:white">
+      <input type="radio" id="dropAdderButton" name="adderMethod" value="dropAdderButton"/>
+      <label for="dropAdderButton">Drop Adder (click and drag in canvas)</label><br />
+
+      <div id="dropAdder" style="display:none">
+        <input id="dropName" type="text" placeholder="Name" />
+        <input id="dropMass" type="number" placeholder="Mass" />
+        <input id="dropRadius" type="number" placeholder="Radius" />
+        <button id="dropSpawn">Spawn</button>
+      </div>
+
+      <input type="radio" id="preciseAdderButton" name="adderMethod" value="preciseAdderButton" />
+      <label for="preciseAdderButton">Precise Adder (type in position and velocity)</label><br />
+
+      <div id="preciseAdder" style="display:none">
+        <input id="preciseName" type="text" placeholder="Name" />
+        <input id="preciseMass" type="number" placeholder="Mass" />
+        <input id="preciseRadius" type="number" placeholder="Radius" />
+        <input id="precisePositionX" type="number" placeholder="Position: X" />
+        <input id="precisePositionY" type="number" placeholder="Position: Y" />
+        <input id="preciseVelocityX" type="number" placeholder="Velocity: X" />
+        <input id="preciseVelocityY" type="number" placeholder="Velocity: Y" />
+        <button id="preciseSpawn">Spawn</button>
+      </div>
     </div>
 
     <div style="color:white;">

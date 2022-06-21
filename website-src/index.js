@@ -117,6 +117,23 @@ debugElem.addEventListener("click", (elem, e) => {
     else document.getElementById("debugSection").style.visibility = "hidden";
 })
 
+const dropAdderButton = document.getElementById("dropAdderButton");
+const preciseAdderButton = document.getElementById("preciseAdderButton");
+const dropAdder = document.getElementById("dropAdder");
+const preciseAdder = document.getElementById("preciseAdder");
+dropAdderButton.checked = "";
+preciseAdderButton.checked = "";
+
+dropAdderButton.addEventListener("click", () => {
+    dropAdder.style.display = "block";
+    preciseAdder.style.display = "none";
+})
+
+preciseAdderButton.addEventListener("click", () => {
+    dropAdder.style.display = "none";
+    preciseAdder.style.display = "block";
+})
+
 const highTrailQualityElem = document.getElementById("highTrailQuality");
 const mediumTrailQualityElem = document.getElementById("mediumTrailQuality");
 const lowTrailQualityElem = document.getElementById("lowTrailQuality");
@@ -168,9 +185,9 @@ canvas3.addEventListener("mouseup", (elem, e) => {
     let distX = (clickedX - pos.x) / 25;
     let distY = (clickedY - pos.y) / 25;
 
-    const name = document.getElementById("name").value;
-    const mass = parseFloat(document.getElementById("mass").value);
-    const radius = parseFloat(document.getElementById("radius").value);
+    const name = document.getElementById("dropName").value;
+    const mass = parseFloat(document.getElementById("dropMass").value);
+    const radius = parseFloat(document.getElementById("dropRadius").value);
 
     addBody(name, mass, radius, clickedX, clickedY, distX, distY);
 
@@ -182,7 +199,7 @@ canvas3.addEventListener("mousemove", (elem, e) => {
     if(mouseInCanvas) {
         ctx3.clearRect(0, 0, WIDTH, HEIGHT);
 
-        const radius = parseFloat(document.getElementById("radius").value);
+        const radius = parseFloat(document.getElementById("dropRadius").value);
         if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
             ctx3.beginPath();
 
@@ -320,13 +337,13 @@ resetButton.addEventListener("click", (elem, e) => {
 const spawnButton = document.getElementById("spawn");
 
 spawnButton.addEventListener("click", (elem, e) => {
-    const name = document.getElementById("name").value;
-    const mass = parseFloat(document.getElementById("mass").value);
-    const radius = parseFloat(document.getElementById("radius").value);
-    const positionX = parseFloat(document.getElementById("positionX").value);
-    const positionY = parseFloat(document.getElementById("positionY").value);
-    const velocityX = parseFloat(document.getElementById("velocityX").value);
-    const velocityY = parseFloat(document.getElementById("velocityY").value);
+    const name = document.getElementById("preciseName").value;
+    const mass = parseFloat(document.getElementById("preciseMass").value);
+    const radius = parseFloat(document.getElementById("preciseRadius").value);
+    const positionX = parseFloat(document.getElementById("precisePositionX").value);
+    const positionY = parseFloat(document.getElementById("precisePositionY").value);
+    const velocityX = parseFloat(document.getElementById("preciseVelocityX").value);
+    const velocityY = parseFloat(document.getElementById("preciseVelocityY").value);
     
     addBody(name, mass, radius, positionX, positionY, velocityX, velocityY);
 
