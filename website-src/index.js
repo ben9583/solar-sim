@@ -102,8 +102,11 @@ const lowSimAccuracyElem = document.getElementById("lowSimAccuracy");
 
 const canvas = document.getElementById("scene");
 const canvas2 = document.getElementById("trails");
+const canvas3 = document.getElementById("placement");
+
 const ctx = canvas.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
+const ctx3 = canvas3.getContext("2d");
 
 let numTrailParticles = highTrailQualityElem.checked ? 100 : mediumTrailQualityElem.checked ? 50 : lowTrailQualityElem.checked ? 10 : 0;
 
