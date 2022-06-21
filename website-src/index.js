@@ -108,6 +108,52 @@ const ctx = canvas.getContext("2d");
 const ctx2 = canvas2.getContext("2d");
 const ctx3 = canvas3.getContext("2d");
 
+ctx3.strokeStyle = "white";
+let mouseInCanvas = false;
+let mouseClicking = false;
+let clickedX = 0;
+let clickedY = 0;
+
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+canvas3.addEventListener("mouseenter", () => { 
+    mouseInCanvas = true;
+});
+canvas3.addEventListener("mouseleave", () => { 
+    mouseInCanvas = false;
+    ctx3.clearRect(0, 0, WIDTH, HEIGHT);
+});
+canvas3.addEventListener("mousedown", (elem, e) => {
+    mouseClicking = true;
+    let pos = getMousePos(canvas3, elem);
+
+    clickedX = pos.x;
+    clickedY = pos.y;
+});
+canvas3.addEventListener("mouseup", (elem, e) => {
+    mouseClicking = false;
+});
+canvas3.addEventListener("mousemove", (elem, e) => {
+    let pos = getMousePos(canvas3, elem);
+
+    if(mouseInCanvas) {
+        ctx3.clearRect(0, 0, WIDTH, HEIGHT);
+
+        const radius = parseFloat(document.getElementById("radius").value);
+        if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
+            ctx3.beginPath();
+            ctx3.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+            ctx3.stroke();
+        }
+    }
+})
+
 let numTrailParticles = highTrailQualityElem.checked ? 100 : mediumTrailQualityElem.checked ? 50 : lowTrailQualityElem.checked ? 10 : 0;
 
 highTrailQualityElem.addEventListener("click", (elem, e) => {
