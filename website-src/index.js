@@ -256,6 +256,10 @@ function step(simulate) {
         let inSimBounds = (newPositions[i * 2] >= -WIDTH && newPositions[i * 2] < 2 * WIDTH && newPositions[i * 2 + 1] >= -HEIGHT && newPositions[i * 2 + 1] < 2 * HEIGHT)
 
         if(!inSimBounds) {
+            ctx2.fillStyle = "black";
+            for(let j = 0; j < trails[i].length; j++) {
+                ctx2.fillRect(trails[i][j][0] - 1, trails[i][j][1] - 1, 5, 5);
+            }
             bodies.splice(i, 1);
             trails.splice(i, 1);
             SolarSim.remove_body(i);
