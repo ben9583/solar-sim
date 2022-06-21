@@ -148,7 +148,15 @@ canvas3.addEventListener("mousemove", (elem, e) => {
         const radius = parseFloat(document.getElementById("radius").value);
         if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
             ctx3.beginPath();
-            ctx3.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+
+            if(mouseClicking) {
+                ctx3.arc(clickedX, clickedY, radius, 0, 2 * Math.PI);
+                ctx3.moveTo(clickedX, clickedY);
+                ctx3.lineTo(pos.x, pos.y);
+            } else {
+                ctx3.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+            }
+
             ctx3.stroke();
         }
     }
