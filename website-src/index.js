@@ -253,6 +253,16 @@ function step(simulate) {
     for(let i = 0; i < bodies.length; i++) {
         let body = bodies[i];
         let inBounds = (newPositions[i * 2] >= 0 && newPositions[i * 2] < WIDTH && newPositions[i * 2 + 1] >= 0 && newPositions[i * 2 + 1] < HEIGHT);
+        let inSimBounds = (newPositions[i * 2] >= -WIDTH && newPositions[i * 2] < 2 * WIDTH && newPositions[i * 2 + 1] >= -HEIGHT && newPositions[i * 2 + 1] < 2 * HEIGHT)
+
+        if(!inSimBounds) {
+            bodies.splice(i, 1);
+            trails.splice(i, 1);
+            SolarSim.remove_body(i);
+
+            i--;
+            continue;
+        }
 
         if(inBounds) {
             ctx.fillStyle = body.color;
