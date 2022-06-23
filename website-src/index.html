@@ -9,6 +9,12 @@
   <body>
     <button id="toggle">Pause</button>
     <button id="reset">Reset</button>
+    <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
+    <div id="debugSection" style="color:white;display:inline;margin-left:10px">
+      <span style="margin-right:10px"># of bodies: <span id="numBodies">6</span></span>
+      <span style="margin-right:10px">Simulation tick time: <span id="simTickTime">10</span><span>μs</span></span>
+      <span style="margin-right:10px">Draw tick time: <span id="drawTickTime">10</span><span>μs</span></span>
+    </div>
     <div id="canvasContainer">
       <canvas width="1280" height="720" id="trails"></canvas>
       <canvas width="1280" height="720" id="scene"></canvas>
@@ -42,9 +48,9 @@
     </div>
 
     <div style="color:white;">
-      <p style="margin-bottom:0">Settings:</p>
-      <div style="float:left;padding-right:25px">
-        <p>Trail quality:</p>
+      <p style="margin-bottom:0;margin-top:25px">Settings:</p>
+      <div style="float:left;padding-right:25px;margin-top:5px">
+        <p style="margin-top:5px;margin-bottom:5px;">Trail quality:</p>
         <div>
           <input type="radio" id="highTrailQuality" name="trailQuality" value="high" checked="checked"/>
           <label for="highTrailQuality">High</label><br />
@@ -56,8 +62,8 @@
           <label for="noneTrailQuality">None</label><br />
         </div>
       </div>
-      <div style="color:white;float:left;padding-right:25px">
-        <p>Simulation Accuracy:</p>
+      <div style="float:left;padding-right:25px;margin-top:5px">
+        <p style="margin-top:5px;margin-bottom:5px;">Simulation Accuracy:</p>
         <div>
           <input type="radio" id="highSimAccuracy" name="simAccuracy" value="high" />
           <label for="highSimAccuracy">High</label><br />
@@ -67,14 +73,7 @@
           <label for="lowSimAccuracy">Low</label><br />
         </div>
       </div>
-      <div style="clear:left;height:50px"></div>
-
-      <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
-      <div id="debugSection" style="color:white">
-        <p># of bodies: <span id="numBodies">6</span></p>
-        <p>Simulation tick time: <span id="simTickTime">10</span><span>μs</span></p>
-        <p>Draw tick time: <span id="drawTickTime">10</span><span>μs</span></p>
-      </div>
+      <div style="clear:left;height:25px"></div>
     </div>
 
     <script src="./bootstrap.js"></script>
