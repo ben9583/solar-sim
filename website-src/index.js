@@ -74,7 +74,6 @@ let trails = [
 
 for(let i = 0; i < bodies.length; i++) {
     let body = bodies[i];
-    
     SolarSim.add_body(body.mass, body.position[0], body.position[1], body.initialVelocity[0], body.initialVelocity[1]);
 }
 
@@ -284,6 +283,9 @@ function step(simulate) {
         let body = bodies[i];
         let inBounds = (newPositions[i * 2] >= 0 && newPositions[i * 2] < WIDTH && newPositions[i * 2 + 1] >= 0 && newPositions[i * 2 + 1] < HEIGHT);
         let inSimBounds = (newPositions[i * 2] >= -WIDTH && newPositions[i * 2] < 2 * WIDTH && newPositions[i * 2 + 1] >= -HEIGHT && newPositions[i * 2 + 1] < 2 * HEIGHT)
+
+        body.position[0] = newPositions[i * 2];
+        body.position[1] = newPositions[i * 2 + 1];
 
         if(!inSimBounds) {
             ctx2.fillStyle = "black";
