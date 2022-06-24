@@ -7,6 +7,22 @@
   </head>
 
   <body>
+    <div id="cookieNotice">
+      <input type="checkbox" id="cookieAcceptance" /><span style="color:white">This website optionally uses cookies. A comprehensive policy can be viewed <a href="cookiePolicy.html">here</a> (updated 24 June 2022). By checking this box, you give permission for using these cookies; you can revoke permissions at any time by unchecking this box.</span>
+      <script>
+        if(document.cookie.length > 0) document.getElementById("cookieAcceptance").checked = true;
+
+        document.getElementById("cookieAcceptance").addEventListener("change", function() {
+          if (this.checked) {
+            document.cookie = "cookiesAccepted=true;max-age=315360000;secure;SameSite=Strict";
+          } else {
+            document.cookie = "cookiesAccepted=;max-age=0;secure;SameSite=Strict";
+            document.cookie = "configSaves=;max-age=0;secure;SameSite=Strict";
+          }
+        });
+      </script>
+      <p></p>
+    </div>
     <button id="toggle">Pause</button>
     <button id="reset">Reset</button>
     <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
