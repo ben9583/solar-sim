@@ -278,7 +278,7 @@ function step(simulate) {
 
     if(debug && count % 10 == 0) tickTime = performance.now();
 
-    const newPositions = SolarSim.get_positions();
+    let newPositions = SolarSim.get_positions();
     for(let i = 0; i < bodies.length; i++) {
         let body = bodies[i];
         let inBounds = (newPositions[i * 2] >= 0 && newPositions[i * 2] < WIDTH && newPositions[i * 2 + 1] >= 0 && newPositions[i * 2 + 1] < HEIGHT);
@@ -294,6 +294,7 @@ function step(simulate) {
             }
             bodies.splice(i, 1);
             trails.splice(i, 1);
+            newPositions.splice(i * 2, 2);
             SolarSim.remove_body(i);
 
             i--;
