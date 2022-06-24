@@ -74,7 +74,6 @@ let trails = [
 
 for(let i = 0; i < bodies.length; i++) {
     let body = bodies[i];
-    
     SolarSim.add_body(body.mass, body.position[0], body.position[1], body.initialVelocity[0], body.initialVelocity[1]);
 }
 
@@ -168,33 +167,41 @@ function getMousePos(canvas, evt) {
 }
 
 canvas3.addEventListener("mouseenter", () => { 
-    mouseInCanvas = true;
+    if(dropAdderEnabled) {
+        mouseInCanvas = true;
+    }
 });
 canvas3.addEventListener("mouseleave", () => { 
-    mouseInCanvas = false;
-    ctx3.clearRect(0, 0, WIDTH, HEIGHT);
+    if(dropAdderEnabled) {
+        mouseInCanvas = false;
+        ctx3.clearRect(0, 0, WIDTH, HEIGHT);
+    }
 });
 canvas3.addEventListener("mousedown", (elem, e) => {
-    mouseClicking = true;
-    let pos = getMousePos(canvas3, elem);
+    if(dropAdderEnabled) {
+        mouseClicking = true;
+        let pos = getMousePos(canvas3, elem);
 
-    clickedX = pos.x;
-    clickedY = pos.y;
+        clickedX = pos.x;
+        clickedY = pos.y;
+    }
 });
 canvas3.addEventListener("mouseup", (elem, e) => {
-    mouseClicking = false;
-    let pos = getMousePos(canvas3, elem);
+    if(dropAdderEnabled) {
+        mouseClicking = false;
+        let pos = getMousePos(canvas3, elem);
 
-    let distX = (clickedX - pos.x) / 25;
-    let distY = (clickedY - pos.y) / 25;
+        let distX = (clickedX - pos.x) / 25;
+        let distY = (clickedY - pos.y) / 25;
 
-    const name = document.getElementById("dropName").value;
-    const mass = parseFloat(document.getElementById("dropMass").value);
-    const radius = parseFloat(document.getElementById("dropRadius").value);
+        const name = document.getElementById("dropName").value;
+        const mass = parseFloat(document.getElementById("dropMass").value);
+        const radius = parseFloat(document.getElementById("dropRadius").value);
 
-    addBody(name, mass, radius, clickedX, clickedY, distX, distY);
+        addBody(name, mass, radius, clickedX, clickedY, distX, distY);
 
-    step(false);
+        step(false);
+    }
 });
 canvas3.addEventListener("mousemove", (elem, e) => {
     if(dropAdderEnabled) {
@@ -276,6 +283,9 @@ function step(simulate) {
         let body = bodies[i];
         let inBounds = (newPositions[i * 2] >= 0 && newPositions[i * 2] < WIDTH && newPositions[i * 2 + 1] >= 0 && newPositions[i * 2 + 1] < HEIGHT);
         let inSimBounds = (newPositions[i * 2] >= -WIDTH && newPositions[i * 2] < 2 * WIDTH && newPositions[i * 2 + 1] >= -HEIGHT && newPositions[i * 2 + 1] < 2 * HEIGHT)
+
+        body.position[0] = newPositions[i * 2];
+        body.position[1] = newPositions[i * 2 + 1];
 
         if(!inSimBounds) {
             ctx2.fillStyle = "black";
