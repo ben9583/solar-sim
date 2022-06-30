@@ -41,6 +41,7 @@ cd ..
 
 Ensure you are in the root directory of this project. Begin by creating the `npm` package using `wasm-pack`; this will create the package in `./pkg`.
 ```sh
+cargo install wasm-pack
 wasm-pack build
 ```
 To start the website for development, run the following command in `website-src`. This will reload the website when you make a change or run `wasm-pack build` again.
