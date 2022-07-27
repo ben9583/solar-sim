@@ -14,10 +14,9 @@
 
         document.getElementById("cookieAcceptance").addEventListener("change", function() {
           if (this.checked) {
-            document.cookie = "cookiesAccepted=true;max-age=315360000;secure;SameSite=Strict";
+            document.cookie = "cookiesAccepted=true;max-age=315360000;SameSite=Strict";
           } else {
-            document.cookie = "cookiesAccepted=;max-age=0;secure;SameSite=Strict";
-            document.cookie = "configSaves=;max-age=0;secure;SameSite=Strict";
+            document.cookie = "cookiesAccepted=;max-age=0;SameSite=Strict";
           }
         });
       </script>
@@ -25,7 +24,7 @@
     </div>
     <button id="toggle">Pause</button>
     <button id="reset">Reset</button>
-    <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (slightly lowers performance)</span>
+    <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (May need to enable precise timers in browser)</span>
     <div id="debugSection" style="color:white;display:inline;margin-left:10px">
       <span style="margin-right:10px"># of bodies: <span id="numBodies">6</span></span>
       <span style="margin-right:10px">Simulation tick time: <span id="simTickTime">10</span><span>μs</span></span>
@@ -61,6 +60,30 @@
         <input id="preciseVelocityY" type="number" placeholder="Velocity: Y" />
         <button id="preciseSpawn">Spawn</button>
       </div>
+    </div><br />
+
+    <div style="color: white">
+      <input id="saveName" type="text" placeholder="Save Name" />
+
+      <button id="saveButton">Save</button>
+      <button id="loadButton">Load</button>
+      <button id="clearButton">Clear</button>
+      <span id="saveMessage"></span><br />
+      <div style="margin-top:5px"><span>Saves list: </span><button id="showSavesList">Show</button></div>
+      <p id="savesList" style="display:none"></p>
+      <script>
+        document.getElementById("showSavesList").addEventListener("click", function() {
+          let savesList = document.getElementById("savesList");
+          let savesListButton = document.getElementById("showSavesList");
+          if (savesList.style.display == "none") {
+            savesList.style.display = "block";
+            savesListButton.innerHTML = "Hide";
+          } else {
+            savesList.style.display = "none";
+            savesListButton.innerHTML = "Show";
+          }
+        });
+      </script>
     </div>
 
     <div style="color:white;">
