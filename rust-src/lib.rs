@@ -131,6 +131,19 @@ pub fn get_positions() -> Array {
 }
 
 #[wasm_bindgen]
+pub fn get_velocities() -> Array {
+    let uni = UNIVERSE.read().unwrap();
+    let out: Array = Array::new();
+    
+    for i in 0..uni.len() {
+        out.push(&JsValue::from_f64(uni[i].velocity.x));
+        out.push(&JsValue::from_f64(uni[i].velocity.y));
+    }
+
+    return out;
+}
+
+#[wasm_bindgen]
 pub fn set_simulation_accuracy(time_step: f64, num_sims_per_step: i32) {
     let mut ts = TIME_STEP.write().unwrap();
     *ts = time_step;

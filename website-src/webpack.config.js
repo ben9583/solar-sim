@@ -15,6 +15,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         "index.html",
+        "cookiePolicy.html",
         {from: "static", to: "static"}
       ]
     })

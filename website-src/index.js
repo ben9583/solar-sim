@@ -3,13 +3,15 @@ import * as SolarSim from "solar-sim";
 const WIDTH = 1280;
 const HEIGHT = 720;
 
+let cookesAccepted = () => document.cookie.length > 0;
+
 let bodies = [
     {
         name: "Sun",
         mass: 5e12,
         radius: 32,
         position: [WIDTH / 2, HEIGHT / 2],
-        initialVelocity: [0, 0],
+        velocity: [0, 0],
         color: "#c8c800",
     },
     {
@@ -17,7 +19,7 @@ let bodies = [
         mass: 1e10,
         radius: 10,
         position: [WIDTH / 2 + 160, HEIGHT / 2],
-        initialVelocity: [0, 1.444169311403618],
+        velocity: [0, 1.444169311403618],
         color: "#0064c8",
     },
     {
@@ -25,7 +27,7 @@ let bodies = [
         mass: 1,
         radius: 4,
         position: [WIDTH / 2 + 174.3684756886812, HEIGHT / 2],
-        initialVelocity: [0, 1.57386005],
+        velocity: [0, 1.57386005],
         color: "#969696",
     },
     {
@@ -33,7 +35,7 @@ let bodies = [
         mass: 1,
         radius: 4,
         position: [WIDTH / 2 + 146.4437229236931, HEIGHT / 2],
-        initialVelocity: [0, 1.321809565],
+        velocity: [0, 1.321809565],
         color: "#969696",
     },
     {
@@ -41,7 +43,7 @@ let bodies = [
         mass: 1,
         radius: 4,
         position: [WIDTH / 2 - 159.813705852, HEIGHT / 2],
-        initialVelocity: [0, -1.444169311403618],
+        velocity: [0, -1.444169311403618],
         color: "#4b964b",
     },
     {
@@ -49,7 +51,7 @@ let bodies = [
         mass: 1,
         radius: 4,
         position: [WIDTH / 2 + 80, HEIGHT / 2 + (Math.sqrt(3)/2) * 160],
-        initialVelocity: [-1.25180591705918, 0.7227304831872841],
+        velocity: [-1.25180591705918, 0.7227304831872841],
         color: "#4b964b",
     },
     {
@@ -57,7 +59,7 @@ let bodies = [
         mass: 1,
         radius: 4,
         position: [WIDTH / 2 + 80, HEIGHT / 2 - (Math.sqrt(3)/2) * 160],
-        initialVelocity: [1.25180591705918, 0.7227304831872841],
+        velocity: [1.25180591705918, 0.7227304831872841],
         color: "#4b964b",
     },
 ];
@@ -74,7 +76,7 @@ let trails = [
 
 for(let i = 0; i < bodies.length; i++) {
     let body = bodies[i];
-    SolarSim.add_body(body.mass, body.position[0], body.position[1], body.initialVelocity[0], body.initialVelocity[1]);
+    SolarSim.add_body(body.mass, body.position[0], body.position[1], body.velocity[0], body.velocity[1]);
 }
 
 function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY) {
@@ -94,7 +96,7 @@ function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY)
         mass: mass,
         radius: radius,
         position: [positionX, positionY],
-        initialVelocity: [velocityX, velocityY],
+        velocity: [velocityX, velocityY],
         color: "#" + red + green + blue,
     });
 
@@ -278,7 +280,8 @@ function step(simulate) {
 
     if(debug && count % 10 == 0) tickTime = performance.now();
 
-    const newPositions = SolarSim.get_positions();
+    let newPositions = SolarSim.get_positions();
+    let newVelocities = SolarSim.get_velocities();
     for(let i = 0; i < bodies.length; i++) {
         let body = bodies[i];
         let inBounds = (newPositions[i * 2] >= 0 && newPositions[i * 2] < WIDTH && newPositions[i * 2 + 1] >= 0 && newPositions[i * 2 + 1] < HEIGHT);
@@ -286,6 +289,8 @@ function step(simulate) {
 
         body.position[0] = newPositions[i * 2];
         body.position[1] = newPositions[i * 2 + 1];
+        body.velocity[0] = newVelocities[i * 2];
+        body.velocity[1] = newVelocities[i * 2 + 1];
 
         if(!inSimBounds) {
             ctx2.fillStyle = "black";
@@ -294,6 +299,7 @@ function step(simulate) {
             }
             bodies.splice(i, 1);
             trails.splice(i, 1);
+            newPositions.splice(i * 2, 2);
             SolarSim.remove_body(i);
 
             i--;
@@ -366,3 +372,91 @@ spawnButton.addEventListener("click", (elem, e) => {
 })
 
 window.requestAnimationFrame(step);
+
+let saves = {};
+
+let saveNameField = document.getElementById("saveName");
+let saveMessageField = document.getElementById("saveMessage");
+let savesList = document.getElementById("savesList");
+if(cookesAccepted()) {
+    let saveString = document.cookie.split("; ").find(cookie => cookie.startsWith("configSaves="));
+    if(saveString) {
+        saves = JSON.parse(atob(saveString.split("=")[1]));
+    }
+
+    savesList.innerHTML = "";
+    for(let i = 0; i < Object.keys(saves).length; i++) {
+        savesList.innerHTML += Object.keys(saves)[i] + "<br />";
+    }
+}
+document.getElementById("cookieAcceptance").addEventListener("click", (elem, e) => {
+    if(document.getElementById("cookieAcceptance").checked) {
+        document.cookie = "configSaves=" + btoa(JSON.stringify(saves)) + ";max-age=315360000;SameSite=Strict";
+    } else {
+        document.cookie = "configSaves=;max-age=0;SameSite=Strict";
+    }
+});
+
+let saveButton = document.getElementById("saveButton");
+saveButton.addEventListener("click", (elem, e) => {
+    if(saveNameField.value.length == 0) return;
+
+    saves[saveNameField.value] = structuredClone(bodies);
+    if(cookesAccepted()) {
+        document.cookie = "configSaves=" + btoa(JSON.stringify(saves)) + ";max-age=315360000;SameSite=Strict";
+    }
+
+    savesList.innerHTML = "";
+    for(let i = 0; i < Object.keys(saves).length; i++) {
+        savesList.innerHTML += Object.keys(saves)[i] + "<br />";
+    }
+    saveMessageField.innerHTML = "Saved as " + saveNameField.value;
+    setTimeout(() => saveMessageField.innerHTML = "", 3000);
+});
+
+let loadButton = document.getElementById("loadButton");
+loadButton.addEventListener("click", (elem, e) => {
+    let saveName = document.getElementById("saveName").value;
+    console.log(saves);
+    if(saveName in saves) {
+
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+        ctx2.clearRect(0, 0, WIDTH, HEIGHT);
+
+        bodies = structuredClone(saves[saveName]);
+        
+        trails = []
+        for(let i = 0; i < bodies.length; i++) {
+            trails.push([]);
+        }
+
+        SolarSim.clear_universe();
+        for(let i = 0; i < bodies.length; i++) {
+            SolarSim.add_body(bodies[i].mass, bodies[i].position[0], bodies[i].position[1], bodies[i].velocity[0], bodies[i].velocity[1]);
+        }
+
+        step(false);
+
+        saveMessageField.innerHTML = "Loaded " + saveName;
+    } else {
+        saveMessageField.innerHTML = "No save with that name";
+    }
+
+    setTimeout(() => saveMessageField.innerHTML = "", 3000);
+});
+
+let clearButton = document.getElementById("clearButton");
+clearButton.addEventListener("click", (elem, e) => {
+    if(clearButton.innerHTML === "Are you sure?") {
+        saves = {};
+        if(cookesAccepted()) {
+            document.cookie = "configSaves=;max-age=0;SameSite=Strict";
+        }
+
+        saveMessageField.innerHTML = "Cleared saves";
+        savesList.innerHTML = "";
+    } else {
+        clearButton.innerHTML = "Are you sure?";
+        setTimeout(() => clearButton.innerHTML = "Clear", 3000);
+    }
+});
