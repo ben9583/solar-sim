@@ -74,15 +74,27 @@ let trails = [
     [],
 ]
 
+let dropSizeMaps = {
+    "small": {
+        mass: 1,
+        radius: 4
+    },
+    "medium": {
+        mass: 1e10,
+        radius: 10
+    },
+    "large": {
+        mass: 5e12,
+        radius: 32
+    }
+}
+
 for(let i = 0; i < bodies.length; i++) {
     let body = bodies[i];
     SolarSim.add_body(body.mass, body.position[0], body.position[1], body.velocity[0], body.velocity[1]);
 }
 
-function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY) {
-    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
-        return;
-
+function randomColor() {
     let red = Math.floor(Math.random() * 256).toString(16);
     let green = Math.floor(Math.random() * 256).toString(16);
     let blue = Math.floor(Math.random() * 256).toString(16);
@@ -91,13 +103,20 @@ function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY)
     if(green.length == 1) green = "0" + green;
     if(blue.length == 1) blue = "0" + blue;
 
+    return "#" + red + green + blue;
+}
+
+function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY) {
+    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
+        return;
+
     bodies.push({
         name: name,
         mass: mass,
         radius: radius,
         position: [positionX, positionY],
         velocity: [velocityX, velocityY],
-        color: "#" + red + green + blue,
+        color: randomColor(),
     });
 
     trails.push([]);
@@ -136,6 +155,18 @@ preciseAdderButton.addEventListener("click", () => {
     preciseAdder.style.display = "block";
     dropAdderEnabled = false;
 })
+
+const dropSizeSmallElem = document.getElementById("dropSizeSmall");
+const dropSizeMediumElem = document.getElementById("dropSizeMedium");
+const dropSizeLargeElem = document.getElementById("dropSizeLarge");
+
+let selectedDropSize = "medium";
+
+dropSizeSmallElem.addEventListener("click", (elem, e) => selectedDropSize = "small");
+dropSizeMediumElem.addEventListener("click", (elem, e) => selectedDropSize = "medium");
+dropSizeLargeElem.addEventListener("click", (elem, e) => selectedDropSize = "large");
+
+dropSizeSmallElem.checked ? selectedDropSize = "small" : dropSizeMediumElem.checked ? selectedDropSize = "medium" : selectedDropSize = "large";
 
 const highTrailQualityElem = document.getElementById("highTrailQuality");
 const mediumTrailQualityElem = document.getElementById("mediumTrailQuality");
@@ -196,11 +227,10 @@ canvas3.addEventListener("mouseup", (elem, e) => {
         let distX = (clickedX - pos.x) / 25;
         let distY = (clickedY - pos.y) / 25;
 
-        const name = document.getElementById("dropName").value;
-        const mass = parseFloat(document.getElementById("dropMass").value);
-        const radius = parseFloat(document.getElementById("dropRadius").value);
+        // const name = document.getElementById("dropName").value;
+        const name = randomColor();
 
-        addBody(name, mass, radius, clickedX, clickedY, distX, distY);
+        addBody(name, dropSizeMaps[selectedDropSize].mass, dropSizeMaps[selectedDropSize].radius, clickedX, clickedY, distX, distY);
 
         step(false);
     }
@@ -212,7 +242,7 @@ canvas3.addEventListener("mousemove", (elem, e) => {
         if(mouseInCanvas) {
             ctx3.clearRect(0, 0, WIDTH, HEIGHT);
 
-            const radius = parseFloat(document.getElementById("dropRadius").value);
+            const radius = dropSizeMaps[selectedDropSize].radius;
             if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
                 ctx3.beginPath();
 
@@ -358,7 +388,8 @@ resetButton.addEventListener("click", (elem, e) => {
 const spawnButton = document.getElementById("preciseSpawn");
 
 spawnButton.addEventListener("click", (elem, e) => {
-    const name = document.getElementById("preciseName").value;
+    // const name = document.getElementById("preciseName").value;
+    const name = randomColor();
     const mass = parseFloat(document.getElementById("preciseMass").value);
     const radius = parseFloat(document.getElementById("preciseRadius").value);
     const positionX = parseFloat(document.getElementById("precisePositionX").value);

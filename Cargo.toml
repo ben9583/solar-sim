@@ -1,6 +1,6 @@
 [package]
 name = "solar-sim"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["Ben Plate <bplate9583@gmail.com>"]
 edition = "2018"
 description = "Physics simulator written in Rust WASM for use in Solar Sim website"
