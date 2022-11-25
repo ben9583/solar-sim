@@ -74,6 +74,21 @@ let trails = [
     [],
 ]
 
+let dropSizeMaps = {
+    "small": {
+        mass: 1,
+        radius: 4
+    },
+    "medium": {
+        mass: 1e10,
+        radius: 10
+    },
+    "large": {
+        mass: 5e12,
+        radius: 32
+    }
+}
+
 for(let i = 0; i < bodies.length; i++) {
     let body = bodies[i];
     SolarSim.add_body(body.mass, body.position[0], body.position[1], body.velocity[0], body.velocity[1]);
@@ -141,6 +156,18 @@ preciseAdderButton.addEventListener("click", () => {
     dropAdderEnabled = false;
 })
 
+const dropSizeSmallElem = document.getElementById("dropSizeSmall");
+const dropSizeMediumElem = document.getElementById("dropSizeMedium");
+const dropSizeLargeElem = document.getElementById("dropSizeLarge");
+
+let selectedDropSize = "medium";
+
+dropSizeSmallElem.addEventListener("click", (elem, e) => selectedDropSize = "small");
+dropSizeMediumElem.addEventListener("click", (elem, e) => selectedDropSize = "medium");
+dropSizeLargeElem.addEventListener("click", (elem, e) => selectedDropSize = "large");
+
+dropSizeSmallElem.checked ? selectedDropSize = "small" : dropSizeMediumElem.checked ? selectedDropSize = "medium" : selectedDropSize = "large";
+
 const highTrailQualityElem = document.getElementById("highTrailQuality");
 const mediumTrailQualityElem = document.getElementById("mediumTrailQuality");
 const lowTrailQualityElem = document.getElementById("lowTrailQuality");
@@ -202,10 +229,8 @@ canvas3.addEventListener("mouseup", (elem, e) => {
 
         // const name = document.getElementById("dropName").value;
         const name = randomColor();
-        const mass = parseFloat(document.getElementById("dropMass").value);
-        const radius = parseFloat(document.getElementById("dropRadius").value);
 
-        addBody(name, mass, radius, clickedX, clickedY, distX, distY);
+        addBody(name, dropSizeMaps[selectedDropSize].mass, dropSizeMaps[selectedDropSize].radius, clickedX, clickedY, distX, distY);
 
         step(false);
     }
@@ -217,7 +242,7 @@ canvas3.addEventListener("mousemove", (elem, e) => {
         if(mouseInCanvas) {
             ctx3.clearRect(0, 0, WIDTH, HEIGHT);
 
-            const radius = parseFloat(document.getElementById("dropRadius").value);
+            const radius = dropSizeMaps[selectedDropSize].radius;
             if(!(isNaN(radius) || !isFinite(radius) || radius < 0.01)) {
                 ctx3.beginPath();
 

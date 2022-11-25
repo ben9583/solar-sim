@@ -36,8 +36,12 @@
 
       <div id="dropAdder" style="display:none">
         <!-- <input id="dropName" type="text" placeholder="Name" /> -->
-        <input id="dropMass" type="number" placeholder="Mass" />
-        <input id="dropRadius" type="number" placeholder="Radius" />
+        <input type="radio" id="dropSizeSmall" name="dropSize" value="small" />
+        <label for="dropSizeSmall">Small</label>
+        <input type="radio" id="dropSizeMedium" name="dropSize" value="medium" checked="checked" />
+        <label for="dropSizeMedium">Medium</label>
+        <input type="radio" id="dropSizeLarge" name="dropSize" value="large" />
+        <label for="dropSizeLarge">Large</label>
         <span>Click to drop at mouse, drag to give velocity</span>
       </div>
 
