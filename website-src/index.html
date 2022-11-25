@@ -67,21 +67,8 @@
       <button id="loadButton">Load</button>
       <button id="clearButton">Clear</button>
       <span id="saveMessage"></span><br />
-      <div style="margin-top:5px"><span>Saves list: </span><button id="showSavesList">Show</button></div>
-      <p id="savesList" style="display:none"></p>
-      <script>
-        document.getElementById("showSavesList").addEventListener("click", function() {
-          let savesList = document.getElementById("savesList");
-          let savesListButton = document.getElementById("showSavesList");
-          if (savesList.style.display == "none") {
-            savesList.style.display = "block";
-            savesListButton.innerHTML = "Hide";
-          } else {
-            savesList.style.display = "none";
-            savesListButton.innerHTML = "Show";
-          }
-        });
-      </script>
+      <div style="margin-top:5px"><span>Saves list: </span></div>
+      <p id="savesList"></p>
     </div>
 
     <div style="color:white;">
