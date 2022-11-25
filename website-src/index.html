@@ -24,12 +24,6 @@
     </div>
     <button id="toggle">Pause</button>
     <button id="reset">Reset</button>
-    <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (May need to enable precise timers in browser)</span>
-    <div id="debugSection" style="color:white;display:inline;margin-left:10px">
-      <span style="margin-right:10px"># of bodies: <span id="numBodies">6</span></span>
-      <span style="margin-right:10px">Simulation tick time: <span id="simTickTime">10</span><span>μs</span></span>
-      <span style="margin-right:10px">Draw tick time: <span id="drawTickTime">10</span><span>μs</span></span>
-    </div>
     <div id="canvasContainer">
       <canvas width="1280" height="720" id="trails"></canvas>
       <canvas width="1280" height="720" id="scene"></canvas>
@@ -101,6 +95,7 @@
           <label for="noneTrailQuality">None</label><br />
         </div>
       </div>
+
       <div style="float:left;padding-right:25px;margin-top:5px">
         <p style="margin-top:5px;margin-bottom:5px;">Simulation Accuracy:</p>
         <div>
@@ -112,7 +107,15 @@
           <label for="lowSimAccuracy">Low</label><br />
         </div>
       </div>
+
       <div style="clear:left;height:25px"></div>
+
+      <input type="checkbox" id="debug" /><span style="color:white">Enable Debug (May need to enable precise timers in browser)</span>
+      <div id="debugSection" style="color:white;display:inline;margin-left:10px">
+        <span style="margin-right:10px"># of bodies: <span id="numBodies">6</span></span>
+        <span style="margin-right:10px">Simulation tick time: <span id="simTickTime">10</span><span>μs</span></span>
+        <span style="margin-right:10px">Draw tick time: <span id="drawTickTime">10</span><span>μs</span></span>
+      </div>
     </div>
 
     <script src="./bootstrap.js"></script>
