@@ -79,10 +79,7 @@ for(let i = 0; i < bodies.length; i++) {
     SolarSim.add_body(body.mass, body.position[0], body.position[1], body.velocity[0], body.velocity[1]);
 }
 
-function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY) {
-    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
-        return;
-
+function randomColor() {
     let red = Math.floor(Math.random() * 256).toString(16);
     let green = Math.floor(Math.random() * 256).toString(16);
     let blue = Math.floor(Math.random() * 256).toString(16);
@@ -91,13 +88,20 @@ function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY)
     if(green.length == 1) green = "0" + green;
     if(blue.length == 1) blue = "0" + blue;
 
+    return "#" + red + green + blue;
+}
+
+function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY) {
+    if(isNaN(mass) || isNaN(radius) || isNaN(positionX) || isNaN(positionY) || isNaN(velocityX) || isNaN(velocityY) || !(isFinite(mass) && isFinite(radius) && isFinite(positionX) && isFinite(positionY) && isFinite(velocityX) && isFinite(velocityY)) || Math.abs(radius) < 0.01)
+        return;
+
     bodies.push({
         name: name,
         mass: mass,
         radius: radius,
         position: [positionX, positionY],
         velocity: [velocityX, velocityY],
-        color: "#" + red + green + blue,
+        color: randomColor(),
     });
 
     trails.push([]);
@@ -196,7 +200,8 @@ canvas3.addEventListener("mouseup", (elem, e) => {
         let distX = (clickedX - pos.x) / 25;
         let distY = (clickedY - pos.y) / 25;
 
-        const name = document.getElementById("dropName").value;
+        // const name = document.getElementById("dropName").value;
+        const name = randomColor();
         const mass = parseFloat(document.getElementById("dropMass").value);
         const radius = parseFloat(document.getElementById("dropRadius").value);
 
@@ -358,7 +363,8 @@ resetButton.addEventListener("click", (elem, e) => {
 const spawnButton = document.getElementById("preciseSpawn");
 
 spawnButton.addEventListener("click", (elem, e) => {
-    const name = document.getElementById("preciseName").value;
+    // const name = document.getElementById("preciseName").value;
+    const name = randomColor();
     const mass = parseFloat(document.getElementById("preciseMass").value);
     const radius = parseFloat(document.getElementById("preciseRadius").value);
     const positionX = parseFloat(document.getElementById("precisePositionX").value);
