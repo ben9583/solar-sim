@@ -1,4 +1,5 @@
 import * as SolarSim from "solar-sim";
+import { randomColor } from "./utils/color.js";
 import { cookiesAccepted } from "./utils/cookie.js";
 
 const WIDTH = 1280;
@@ -91,18 +92,6 @@ let dropSizeMaps = {
 for(let i = 0; i < bodies.length; i++) {
     let body = bodies[i];
     SolarSim.add_body(body.mass, body.position[0], body.position[1], body.velocity[0], body.velocity[1]);
-}
-
-function randomColor() {
-    let red = Math.floor(Math.random() * 256).toString(16);
-    let green = Math.floor(Math.random() * 256).toString(16);
-    let blue = Math.floor(Math.random() * 256).toString(16);
-
-    if(red.length == 1) red = "0" + red;
-    if(green.length == 1) green = "0" + green;
-    if(blue.length == 1) blue = "0" + blue;
-
-    return "#" + red + green + blue;
 }
 
 function addBody(name, mass, radius, positionX, positionY, velocityX, velocityY) {
