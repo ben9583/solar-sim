@@ -1,9 +1,8 @@
 import * as SolarSim from "solar-sim";
+import { cookiesAccepted } from "./utils/cookie.js";
 
 const WIDTH = 1280;
 const HEIGHT = 720;
-
-let cookesAccepted = () => document.cookie.length > 0;
 
 let bodies = [
     {
@@ -409,7 +408,7 @@ let saves = {};
 let saveNameField = document.getElementById("saveName");
 let saveMessageField = document.getElementById("saveMessage");
 let savesList = document.getElementById("savesList");
-if(cookesAccepted()) {
+if(cookiesAccepted()) {
     let saveString = document.cookie.split("; ").find(cookie => cookie.startsWith("configSaves="));
     if(saveString) {
         saves = JSON.parse(atob(saveString.split("=")[1]));
@@ -433,7 +432,7 @@ saveButton.addEventListener("click", (elem, e) => {
     if(saveNameField.value.length == 0) return;
 
     saves[saveNameField.value] = structuredClone(bodies);
-    if(cookesAccepted()) {
+    if(cookiesAccepted()) {
         document.cookie = "configSaves=" + btoa(JSON.stringify(saves)) + ";max-age=315360000;SameSite=Strict";
     }
 
@@ -480,7 +479,7 @@ let clearButton = document.getElementById("clearButton");
 clearButton.addEventListener("click", (elem, e) => {
     if(clearButton.innerHTML === "Are you sure?") {
         saves = {};
-        if(cookesAccepted()) {
+        if(cookiesAccepted()) {
             document.cookie = "configSaves=;max-age=0;SameSite=Strict";
         }
 
