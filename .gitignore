@@ -6,3 +6,4 @@ pkg/
 wasm-pack.log
 website-src/dist
 website-src/node_modules
+.vscode
