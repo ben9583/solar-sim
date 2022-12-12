@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf dist/*.wasm && webpack --config webpack.config.js",
     "start": "webpack-dev-server",
-    "lint": "eslint ."
+    "lint": "eslint ./js --fix"
   },
   "keywords": [
     "webassembly",

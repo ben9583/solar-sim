@@ -1,3 +1,3 @@
-const cookiesAccepted = () => document.cookie.length > 0;
+const cookiesAccepted = () => document.cookie.length > 0
 
-export { cookiesAccepted };
+export { cookiesAccepted }
